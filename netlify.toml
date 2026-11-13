@@ -1,9 +1,16 @@
-# No build step: static files from ./public, one function in ./netlify/functions.
+# No build step: static files from ./public plus one proxy rule.
 [build]
   publish = "public"
 
-[functions]
-  directory = "netlify/functions"
+# mcp.tutoria.lat/mcp is passed straight through to the TutorIA roleplay
+# launcher (Supabase edge function "roleplay-launcher" in the main repo).
+# A plain proxy rule: Netlify forwards the request and returns the answer
+# unchanged. The launcher is public, read-only and stateless.
+[[redirects]]
+  from = "/mcp"
+  to = "https://txyjiacchcvnsdsjlroz.supabase.co/functions/v1/roleplay-launcher"
+  status = 200
+  force = true
 
 # OpenAI's domain check reads this file as plain text.
 [[headers]]
