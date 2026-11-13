@@ -1,0 +1,13 @@
+# No build step: static files from ./public, one function in ./netlify/functions.
+[build]
+  publish = "public"
+
+[functions]
+  directory = "netlify/functions"
+
+# OpenAI's domain check reads this file as plain text.
+[[headers]]
+  for = "/.well-known/openai-apps-challenge"
+  [headers.values]
+    Content-Type = "text/plain; charset=utf-8"
+    Cache-Control = "no-store"
